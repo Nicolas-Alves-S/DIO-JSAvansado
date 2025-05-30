@@ -5,29 +5,80 @@ Isso é útil para estender funcionalidades de objetos nativos ou criar novos co
 O Prototype é uma parte fundamental do sistema de herança do JavaScript.
 Ele permite que objetos herdem propriedades e métodos de outros objetos, criando uma cadeia de protótipos.
 */
-// Exemplo simples de como funciona o Prototype
-//aqui seria o objeto pai 
-const pessoa1 = {
-    nome:'Nick',
-    idade: 25
-}
-// aqui seria o objeto filho que herda as propriedades do objeto pai
-pessoa1.genero = 'Masculino'; // Adicionando nova propriedade
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Exemplo simples de como funciona o Prototype
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const pessoa1 = {
+    nome: 'Nick',
+    idade: 25
+};
+// Adicionando nova propriedade ao objeto pai
+pessoa1.genero = 'Masculino'; 
 console.log(pessoa1); // Acessando nova propriedade
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-// Exemplo de uso do Prototype
+
+// Exemplo de uso do Prototype com __proto__
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 const pessoa = {
     idade: 30,
-}
+};
 const joao = {
     nome: 'João',
     altura: 1.75,
     __proto__: pessoa // Definindo a propriedade protótipo
-}
-// o metodo __proto__ é usado para definir o protótipo de um objeto que seria percorer ate o objeto pai que seria a
-//  função pessoa que tem a propriedade idade,ele roda primeiro o objeto filho e depois o pai se nao tem nada relacionado
-
+};
 console.log(joao.idade); // Acessando a propriedade idade do protótipo
+
 // Adicionando um novo método ao protótipo
+pessoa.falar = function() {
+    console.log(`Olá, meu nome é ${this.nome}`);
+};
+joao.falar(); // Chamando o método do protótipo
+
+// Adicionando uma nova propriedade ao protótipo
+pessoa.profissao = 'Desenvolvedor';
+console.log(joao.profissao); // Acessando a nova propriedade do protótipo
+
+// Adicionando uma nova propriedade ao objeto filho
+joao.genero = 'Masculino';
+console.log(joao.genero); // Acessando a nova propriedade do objeto filho
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Exemplo de uso do operador `new` e função construtora
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function Pessoa2(nome, idade) {
+    this.nome = nome;
+    this.idade = idade;
+}
+console.log(new Pessoa2('Nick', 25)); // Criando um novo objeto com o operador `new`
+
+// Adicionando um novo método ao protótipo da função construtora
+Pessoa2.prototype.falar = function() {
+    console.log(`Olá, meu nome é ${this.nome} e tenho ${this.idade} anos.`);
+};
+
+const maria = new Pessoa2('Maria', 28); // Criando um novo objeto
+maria.falar(); // Chamando o método do protótipo
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Exemplo de uso de `call` para herança de propriedades
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const marcelo = {
+    genero: 'Masculino',
+    profissao: 'Desenvolvedor',
+};
+Pessoa2.call(marcelo, 'nome', 30); // Chamando o método do protótipo
+console.log(marcelo); // Acessando a nova propriedade do objeto pai
