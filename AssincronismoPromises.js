@@ -199,3 +199,46 @@ setTimeout(() => {
 
 }, 4000); // Aguarda 4 segundos antes de executar o código
 
+//resumindo o código acima:
+// O código lê um arquivo chamado "Tarefas.csv" usando Promises.
+// Ele converte o conteúdo do arquivo para string, divide em linhas, remove o cabeçalho,
+// e converte cada linha em um objeto com nome e feito.
+// Por fim, imprime a lista de tarefas no console.
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Async/Await
+// Async/Await é uma forma mais simples e legível de trabalhar com Promises.
+// Ele permite escrever código assíncrono de forma síncrona, tornando-o mais fácil de entender e manter.
+// async serve para declarar uma função assíncrona(ou seja, uma funcao que retorna uma Promise(um valor futuro)), e await é 
+// usado para esperar a resolução de uma Promise dentro dessa função.ou seja, o await só pode ser usado dentro de uma função async.
+setTimeout(() => {
+    console.log("Aguardei 5 segundos");
+const fs = require('fs');
+const path = require('path'); 
+const filepath = path.resolve(__dirname, 'Tarefas.csv')
+ async function lerArquivoAsync() {
+    const aquivo1 = await fs.promises.readFile(filepath)//basicamente o await vai ler o aquivo e esperar ele ser lido e passar pra variavel
+    const textodoaquivo = aquivo1.toString('utf8');
+    const linhasSemCabeçalho = textodoaquivo.split('\n').slice(1);
+    const listadeTarefas = linhasSemCabeçalho.map((linha) => {
+        const [nome, feito] = linha.split(';'); // Aqui ele fala que e pra quebrar a linha a partir do ponto e virgula depois do nome e feito
+        return { 
+            nome, 
+            feito: feito === 'true' // Converte o valor de feito para booleano
+        }; 
+    })
+    return listadeTarefas; // Retorna a lista de tarefas ate que seja resolvido o await
+}
+async function executar() {
+    try {
+        const tarefas = await lerArquivoAsync(); // Chama a função assíncrona e espera o resultado
+        console.log(tarefas);
+    } catch (error) {
+        console.error(`Erro ao ler o arquivo: ${error}`); // Imprime o erro caso a leitura do arquivo falhe
+    }
+}
+executar(); 
+}, 5000); 
+//resumindo o código acima:
+
+
+
